@@ -3,6 +3,7 @@ import React from 'react'
 import 'antd/dist/antd.css' 
 import axios from 'axios' 
 import { connect } from 'dva'
+import Recaptcha from 'react-recaptcha'
 
 import { Form, Input, Tooltip, Icon, Select, Row, Col, Checkbox, Button } from 'antd' 
 
@@ -26,7 +27,7 @@ class Register extends React.Component {
         console.log('I am working in ', values.company) 
         const props = this.props
 
-        axios.post('/signup', {
+        axios.post('http://localhost:1339/signup', {
           username: values.email,
           name : values.name,
           phone: values.phone,
@@ -37,7 +38,7 @@ class Register extends React.Component {
           alert("Success to insert data to database") 
           console.log("Response is:") 
           console.log(response) 
-          props.history.push("/reg")
+          props.history.push("/landing")
 
         })
         .catch(function (error) {
@@ -46,6 +47,10 @@ class Register extends React.Component {
         }) 
       }
     }) 
+  }
+
+  reCaptchaLoaded () {
+    console.log('Captcha success')
   }
 
   handleConfirmBlur = (e) => {
@@ -195,7 +200,7 @@ class Register extends React.Component {
           {...formItemLayout}
           label={(
             <span>
-              Company&nbsp 
+              Company  
               <Tooltip title="Where do you work with the region?">
                 <Icon type="question-circle-o" />
               </Tooltip>
@@ -216,7 +221,7 @@ class Register extends React.Component {
           {...formItemLayout}
           label={(
             <span>
-              Division&nbsp 
+              Division  
               <Tooltip title="What is your current division?">
                 <Icon type="question-circle-o" />
               </Tooltip>
@@ -233,27 +238,29 @@ class Register extends React.Component {
           </Col></Row>
         </FormItem>
 
-       
         <FormItem
           {...formItemLayout}
           label="Captcha"
-          extra="We must make sure that your are a human."
         >
           <Row gutter={8}>
             <Col span={12}>
               {getFieldDecorator('captcha', {
-                rules: [{ required: true, message: 'Please input the captcha you got!' }],
+                rules: [{ required: true, message: 'Please check the captcha!' }],
               })(
-                <Input />
+                <Recaptcha
+                sitekey="6LcrSmUUAAAAAF6NBGQEBCSQOY7JrjBsP6Pd1EDI"
+                render="explicit"
+                onloadCallback={this.reCaptchaLoaded()}
+                />
+                
               )}
+            
             </Col>
-            <Col span={8}>
-              <Button>Get captcha</Button>
-              
-            </Col>
+
           </Row>
 
         </FormItem>
+        
 
         <FormItem {...tailFormItemLayout}>
           {getFieldDecorator('agreement', {
