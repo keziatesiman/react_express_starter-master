@@ -96,8 +96,8 @@ const Dashboard = Mock.mock({
   ],
   quote: {
     name: 'Pooh',
-    title: 'Honey Bear',
-    content: 'Sometimes the smallest things take the most room in your heart',
+    title: 'Winnie the Pooh',
+    content: 'Sometimes the smallest things take up the most room in your heart',
     avatar: 'https://vignette.wikia.nocookie.net/disney/images/d/d2/Pooh_Icon.jpg/revision/latest?cb=20131122170610',
   },
   numbers: [

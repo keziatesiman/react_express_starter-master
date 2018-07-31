@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'dva'
 import { Alert, Button, Row, Form, Input } from 'antd'
 import { config } from 'utils'
+import { Link } from 'react-router-dom'
 import styles from './index.less'
 
 const FormItem = Form.Item
@@ -60,6 +61,16 @@ const Login = ({
             <span>Password：guest</span>
           </p>
         </Row>
+        <Row>
+        <p>Do not have an account? Click register!</p>
+          <Button type="default">
+          <Link to='/register'>
+            Register
+          </Link>
+          </Button>
+
+         </Row>
+
 
       </form>
     </div>
