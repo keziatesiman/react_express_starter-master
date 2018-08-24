@@ -7,9 +7,7 @@ export default {
   state: {},
 
   effects: {
-    * login ({
-      payload,
-    }, { put, call, select }) {
+    * login ({ payload }, { put, call, select }) {
       const data = yield call(login, payload)
       const { locationQuery } = yield select(_ => _.app)
       if (data.success) {
@@ -25,6 +23,10 @@ export default {
         throw data
       }
     },
+    * login2 ({ payload }, { put }){
+      yield put({ type: 'app/query2', payload:payload })
+    },
   },
+  
 
 }

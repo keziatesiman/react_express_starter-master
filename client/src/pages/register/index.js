@@ -244,9 +244,7 @@ class Register extends React.Component {
         >
           <Row gutter={8}>
             <Col span={12}>
-              {getFieldDecorator('captcha', {
-                rules: [{ required: true, message: 'Please check the captcha!' }],
-              })(
+              {getFieldDecorator('captcha')(
                 <Recaptcha
                 sitekey="6LcrSmUUAAAAAF6NBGQEBCSQOY7JrjBsP6Pd1EDI"
                 render="explicit"

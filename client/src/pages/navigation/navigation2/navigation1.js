@@ -6,7 +6,7 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
 
     const Option = Select.Option 
     const children = [] 
-    axios.get('http://localhost:1339/getroles')
+    axios.get('/getroles')
           .then(function (response) {
             //console.log(response.data.length) 
             for (let i=0 ; i<response.data.length ; i++){
@@ -19,7 +19,7 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
     })  
 
     const companiesData = [] 
-    axios.get('http://localhost:1339/getcompanies')
+    axios.get('/getcompanies')
           .then(function (response) {
             //console.log(response.data.length) 
             for (let i=0 ; i<response.data.length ; i++){
@@ -32,7 +32,7 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
     })  
 
     const supervisorsData = [] 
-    axios.get('http://localhost:1339/getsupervisors')
+    axios.get('/getsupervisors')
           .then(function (response) {
             //console.log(response.data.length) 
             for (let i=0 ; i<response.data.length ; i++){
@@ -102,7 +102,7 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
     function handleReject (record){
       console.log(`${record.user_username} is rejected`) 
 
-      axios.get(`http://localhost:1339/deleteuser/${record.user_username}`)
+      axios.get(`/deleteuser/${record.user_username}`)
           .then(function (response) {
             console.log(response) 
             console.log("deleted") 
@@ -123,20 +123,20 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
         var company_id = ""
         var supervisor_id = ""
 
-        axios.get(`http://localhost:1339/getcompanyid/${company}`)
+        axios.get(`http://localhost:1338/getcompanyid/${company}`)
           .then(function (response) {
               console.log('company id : ',response.data) 
               company_id = response.data 
 
               if (supervisor !== "") {
-              axios.get(`http://localhost:1339/getsupervisorid/${supervisor}`)
+              axios.get(`http://localhost:1338/getsupervisorid/${supervisor}`)
                 .then(function (response2) {
                     console.log('supervisor id : ',response2.data) 
                     supervisor_id = response2.data 
 
                     console.log(company_id, ' is company id and supervisor id is ', supervisor_id) 
 
-                    axios.post('http://localhost:1339/updateuser', {
+                    axios.post('http://localhost:1338/updateuser', {
                       username: username_current,
                       division : division,
                       company_id: company_id,
@@ -161,7 +161,7 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
               } 
               else {
                    
-                axios.post('http://localhost:1339/updateuser', {
+                axios.post('http://localhost:1338/updateuser', {
                       username: username_current,
                       division : division,
                       company_id: company_id,
@@ -229,8 +229,8 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
     key: 'user_division',
     render: (text, record) => (
         <span>
-        `{record.user_username}` selected role {text} 
-        <br/> 
+        {text} `{record.user_username}`
+        <br/>
         <Select
             mode="multiple"
             style={{ width: '80%' }}
@@ -269,7 +269,8 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
     key: 'action',
     render: (text, record) => (
         <span>
-        
+        Action 一 {record.user_name}
+        <Divider type="vertical" />
         <Popconfirm title="Are you sure accept this task?" onConfirm={(e) => confirmAccept(record, e)} onCancel={cancelAccept} okText="Yes" cancelText="No">
         <Button type="primary">Accept</Button>
         </Popconfirm>
@@ -292,7 +293,7 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
       
         
         render () {
-          axios.get('http://localhost:1339/user')
+          axios.get('/user')
           .then(function (response) {
             console.log(response) 
           })
