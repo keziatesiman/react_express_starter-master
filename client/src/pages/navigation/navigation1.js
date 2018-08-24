@@ -229,8 +229,8 @@ import { Table, Divider, Select, Button, Popconfirm, message } from 'antd'
     key: 'user_division',
     render: (text, record) => (
         <span>
-        {text} `{record.user_username}`
-        <br/>
+        `{record.user_username}` selected role {text} 
+        <br/> 
         <Select
             mode="multiple"
             style={{ width: '80%' }}

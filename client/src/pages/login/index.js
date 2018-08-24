@@ -14,6 +14,7 @@ const Login = ({
   form: {
     getFieldDecorator,
     validateFieldsAndScroll,
+    getFieldValue,
   },
 }) => {
   function handleOk () {
@@ -23,9 +24,27 @@ const Login = ({
         <Alert message="Error: Password is incorrect" type="error" />
         return
       }
+      console.log(values)
       dispatch({ type: 'login/login', payload: values })
     })
   }
+  
+  function handleNotOk () {
+    
+    // validateFieldsAndScroll((errors, values) => {
+    //   if (errors) {
+    //     <Alert message="HHAHAHAA" type="error" />
+    //     return
+    //   }
+    //   console.log(values)
+      
+    // })
+    console.log(getFieldValue('username'))
+    //var users =getFieldValue('username')
+    //dispatch({ type: 'login/login2', payload:users})
+  }
+  
+  
 
   return (
     <div className={styles.form}>
@@ -41,7 +60,7 @@ const Login = ({
                 required: true,
               },
             ],
-          })(<Input onPressEnter={handleOk} placeholder="Username" />)}
+          })(<Input onChange={handleNotOk} onPressEnter={handleOk} placeholder="Username" />)}
         </FormItem>
         <FormItem hasFeedback>
           {getFieldDecorator('password', {
@@ -52,6 +71,7 @@ const Login = ({
             ],
           })(<Input type="password" onPressEnter={handleOk} placeholder="Password" />)}
         </FormItem>
+        
         <Row>
           <Button type="primary" onClick={handleOk} loading={loading.effects.login}>
             Sign in
@@ -79,7 +99,7 @@ const Login = ({
 
 Login.propTypes = {
   form: PropTypes.object,
-  dispatch: PropTypes.func,
+  dispatch: PropTypes.funct,
   loading: PropTypes.object,
 }
 

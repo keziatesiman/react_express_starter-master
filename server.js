@@ -209,7 +209,7 @@ app.post('/signup', (req, res) => {
     console.log("Hashed pass ",hashedPass);
     console.log("date time: ", created_at);
 
-    var sql = "INSERT INTO user_data(id, username, password, name, phone, current_company, division, created_at) \
+    var sql = "INSERT INTO users(id, username, password, name, phone, current_company, division, created_at) \
 	VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     connection.query(sql, [id, usern, hashedPass, name, phone, current_company, division, created_at], (err, rows, fields) => {
         if (!err) {
@@ -239,56 +239,57 @@ app.post('/signup', (req, res) => {
 
 //Authenticate user data
 app.post('/authenticate', (req, res) => {
-    console.log(req.body)
+    console.log('BODY ',req.body)
     const username = req.body.username
     const password = req.body.password
+    const company = req.body.company
 
     //hash the password
     var hashedPass = bcrypt.hashSync(password, saltRounds); 
     console.log("Hashed password: ",hashedPass);   
-    const sql = 'SELECT * FROM user_data WHERE username = ?'
+    const sql = 'SELECT * FROM users WHERE username = ?'
     connection.query(sql, [username], (err, result) => {
         if(result.length > 0) {
-            // var hasil = bcrypt.compareSync(password, result[0].Password); 
-            
-            const dbpass = result[0].password;
-            console.log(dbpass);
+                // var hasil = bcrypt.compareSync(password, result[0].Password); 
+                
+                const dbpass = result[0].password;
+                console.log(dbpass);
 
-            bcrypt.compare(password, dbpass, function(err, resp) {
-                if(resp) {
-                    // Passwords match
-                    console.log("match");
-                    var now = datetime.create();
-                    var last_login = now.format('Y-m-d H:M:S');
-                    
-                    var sqlUpdate = "UPDATE user_data SET last_login = ? WHERE username = ?";
-                    connection.query(sqlUpdate, [last_login, username] ,(err, result) => {
-                        if (!err) {
-                            console.log('updated last login at ', last_login);
-                        }
-                        else {
-                            console.log("error \n");
-                            console.log(err);
-                        }
-                 })
-                    var idLog = uuidv4()
-                    var sqlInsertLog = "INSERT INTO logs(id, username, type, class, activity, description) \
-                    VALUES (?, ?, 'web', 'tryLogin', 'login', 'login success');"
-                    connection.query(sqlInsertLog, [idLog, username] ,(err, result) => {
-                        if (!err) {
-                            console.log('updated logs at login success', last_login);
-                        }
-                        else {
-                            console.log("error \n");
-                            console.log(err);
-                        }
-                 })
+                bcrypt.compare(password, dbpass, function(err, resp) {
+                    if(resp) {
+                        // Passwords match
+                        console.log(" password match");
+                        var now = datetime.create();
+                        var last_login = now.format('Y-m-d H:M:S');
+                        
+                        var sqlUpdate = "UPDATE users SET last_login = ? WHERE username = ?";
+                        connection.query(sqlUpdate, [last_login, username] ,(err, result) => {
+                            if (!err) {
+                                console.log('updated last login at ', last_login);
+                            }
+                            else {
+                                console.log("error \n");
+                                console.log(err);
+                            }
+                    })
+                        var idLog = uuidv4()
+                        var sqlInsertLog = "INSERT INTO logs(id, username, type, class, activity, description) \
+                        VALUES (?, ?, 'web', 'tryLogin', 'login', 'login success');"
+                        connection.query(sqlInsertLog, [idLog, username] ,(err, result) => {
+                            if (!err) {
+                                console.log('updated logs at login success', last_login);
+                            }
+                            else {
+                                console.log("error \n");
+                                console.log(err);
+                            }
+                    })
 
-                 res.status(200).json({
-                    statusCode: 200,
-                    loginSuccess: true,
-                    message: "Login Success Yey"
-                })
+                    res.status(200).json({
+                        statusCode: 200,
+                        loginSuccess: true,
+                        message: "Login Success Yey"
+                    })
                 } else {
                  // Passwords don't match
                  console.log("not match");
@@ -315,7 +316,9 @@ app.post('/authenticate', (req, res) => {
                 
                 } 
               });
-              
+            
+            
+
         } else {
             console.log("not match");
 

@@ -99,7 +99,7 @@ module.exports = {
 
     axios.post('http://localhost:1339/authenticate', {
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
     })
     .then(function (response) {
       console.log("response");
@@ -122,7 +122,7 @@ module.exports = {
         res.json({ success: false, message: 'Wrong Password' })
       }
       else {
-        console.log("Wrong username or password");
+        console.log("Username does not exist");
         //res.status(400).end()
         res.json({ success: false, message: 'Username does not exist' })
       }

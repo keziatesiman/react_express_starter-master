@@ -62,16 +62,19 @@ export default {
     },
 
   },
+  //buat login
   effects: {
-
+    
     * query ({
       payload,
     }, { call, put, select }) {
-      const { success, user } = yield call(query, payload)
+      const { success, user } = yield call(query, payload) //query dari services/app --> untuk post URL
       const { locationPathname } = yield select(_ => _.app)
       if (success && user) {
-        const { list } = yield call(menusService.query)
-        const { permissions } = user
+        console.log(user)
+        console.log("ini user")
+        const { list } = yield call(menusService.query) //cari di user.js
+        const { permissions } = user  //ambil permision
         let menu = list
         if (permissions.role === EnumRoleType.ADMIN || permissions.role === EnumRoleType.DEVELOPER) {
           permissions.visit = list.map(item => item.id)
